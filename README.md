@@ -34,15 +34,15 @@ KRAS (an oncogene) has 765 missense mutations at only **32 positions**, and 73% 
 | PIK3CA | 1,544 | 202 | H1047 (295), E545 (295), E542 (180), R88 (68), Q546 (55) |
 
 **2. TP53 has two kinds of hotspot: DNA-contact and structural.**
-In the p53–DNA structure (PDB 1TSR), **R273 (2.5 Å) and R248 (3.4 Å)** touch the DNA directly. **R175 (13 Å), Y220 (30 Å), and the zinc-binding residues C176 and H179** sit away from the DNA; these mutations are expected to work by disrupting the protein's fold rather than its DNA contact.
+In the p53–DNA structure (PDB 1TSR), **R273 (2.5 Å) and R248 (3.4 Å)** touch the DNA directly. **R175 (13 Å), Y220 (30 Å), and the zinc-binding residues C176 and H179** sit away from the DNA; these mutations are expected to work by disrupting the protein's fold rather than its DNA contact, in line with earlier structural studies of p53 mutants [6, 16].
 
 **3. KRAS hotspots surround the nucleotide pocket.**
 **G12 (3.2 Å), G13 (2.0 Å) and A146 (2.1 Å)** directly contact GDP. Q61 is 10 Å away in this GDP-bound ("off") structure, consistent with its known role in the GTP-bound ("on") state.
 
 ![Distance to partner](results/figures/distance_to_partner.png)
 
-**4. TP53 and KRAS hotspots cluster in 3D; PIK3CA hotspots do not.**
-The 5 most mutated residues are ~35% closer together than random residue sets in TP53 (p = 0.013) and KRAS (p = 0.018) (permutation test, 10,000 random sets). PIK3CA shows no clustering (ratio ≈ 1.0) because its hotspots fall in **two distant domains**: the helical domain (E542K, E545K) and the kinase domain (H1047R). These are two different routes to activating the same protein.
+**4. The strongest TP53 and KRAS hotspots cluster in 3D; PIK3CA hotspots do not.**
+The 5 most mutated residues are ~35% closer together than random residue sets in TP53 (p = 0.013) and KRAS (p = 0.018) (permutation test, 10,000 random sets). When the top 10 residues are used, the signal weakens (TP53 p = 0.024; KRAS p = 0.051, not significant), because the extra residues are rarer mutations scattered elsewhere. PIK3CA shows no clustering (ratio ≈ 1.0); this is consistent with its hotspots lying in **two distant domains**, the helical domain (E542K, E545K) and the kinase domain (H1047R), which are thought to activate the protein by different routes. These p-values are not corrected for multiple testing and should be read as exploratory.
 
 | Gene | Top-K | Observed mean distance (Å) | Random (Å) | Ratio | p-value |
 |---|---|---|---|---|---|
@@ -56,8 +56,8 @@ The 5 most mutated residues are ~35% closer together than random residue sets in
 ![Clustering test](results/figures/clustering_test.png)
 
 **5. Links to therapy.**
-- **KRAS G12C** (101 patients here) is the target of approved covalent inhibitors (sotorasib, adagrasib). **G12D**, the most common variant (197 patients), has been much harder to drug.
-- **TP53 Y220C** (75 patients) creates a surface cavity that destabilises the protein; small molecules that fill this pocket and restore p53 folding have reached clinical testing.
+- **KRAS G12C** (101 patients here) is the target of approved covalent inhibitors, sotorasib [14] and adagrasib [15]. **G12D**, the most common variant (197 patients), has been much harder to drug.
+- **TP53 Y220C** (75 patients) creates a surface crevice that destabilises the protein and was proposed as a target for stabilising drugs [16]. One such compound, rezatapopt, is being tested in the Phase 1/2 PYNNACLE trial (NCT04585750) [17]; it is not yet approved.
 
 **6. Cancer types.** KRAS mutations concentrate in colorectal, lung and pancreatic cancer; PIK3CA mutations in breast and endometrial cancer; TP53 mutations are frequent across almost all types.
 
@@ -67,9 +67,9 @@ The 5 most mutated residues are ~35% closer together than random residue sets in
 
 | TP53 + DNA | KRAS + GDP | PIK3CA (AlphaFold) |
 |---|---|---|
-| ![](results/figures/TP53_3D.png) | ![](results/figures/KRAS_3D.png) | ![](results/figures/PIK3CA_3D.png) |
+| ![TP53 bound to DNA, coloured by mutation frequency](results/figures/TP53_3D.png) | ![KRAS bound to GDP, coloured by mutation frequency](results/figures/KRAS_3D.png) | ![PIK3CA AlphaFold model, coloured by mutation frequency](results/figures/PIK3CA_3D.png) |
 
-Interactive, rotatable versions are in [`results/interactive/`](results/interactive/). Download one and open it in a browser.
+**Interactive 3D views** (rotate, zoom, hover for patient counts): [TP53](https://mdabrarfaiyaj.github.io/cancer-mutation-3d-hotspots/results/interactive/TP53_3D.html) · [KRAS](https://mdabrarfaiyaj.github.io/cancer-mutation-3d-hotspots/results/interactive/KRAS_3D.html) · [PIK3CA](https://mdabrarfaiyaj.github.io/cancer-mutation-3d-hotspots/results/interactive/PIK3CA_3D.html)
 
 ---
 
@@ -106,7 +106,7 @@ Interactive, rotatable versions are in [`results/interactive/`](results/interact
 - **Single, static structures.** KRAS is shown in the GDP ("off") state, and TP53 shows only the DNA-binding domain (it covers 97% of TP53 missense mutations).
 - **PIK3CA is modelled alone.** In the cell it binds the regulatory subunit p85, and the helical-domain hotspots act at that interface, which this model does not include.
 - **Raw counts only.** Hotspots are ranked by raw patient counts, with no correction for background mutation rate or protein length. All data come from one cohort (TCGA).
-- **Modest p-values** from one test statistic. Results are consistent with known biology but are exploratory.
+- **Modest p-values** from one test statistic, with no correction for multiple testing across genes and K values. Results are consistent with known biology but are exploratory.
 
 ## How to run
 
@@ -135,7 +135,8 @@ Run from the project root. Structures are downloaded automatically (except `stru
 
 ## References
 
-**Mutation data**
+**Mutation data** (references 1–3 are the citations cBioPortal asks all users to include)
+
 1. Cerami E, et al. The cBio Cancer Genomics Portal: an open platform for exploring multidimensional cancer genomics data. *Cancer Discovery*. 2012;2(5):401–404. doi:[10.1158/2159-8290.CD-12-0095](https://doi.org/10.1158/2159-8290.CD-12-0095)
 2. Gao J, et al. Integrative analysis of complex cancer genomics and clinical profiles using the cBioPortal. *Science Signaling*. 2013;6(269):pl1. doi:[10.1126/scisignal.2004088](https://doi.org/10.1126/scisignal.2004088)
 3. de Bruijn I, et al. Analysis and visualization of longitudinal genomic and clinical data from the AACR Project GENIE Biopharma Collaborative in cBioPortal. *Cancer Research*. 2023;83(23):3861–3867. doi:[10.1158/0008-5472.CAN-23-0816](https://doi.org/10.1158/0008-5472.CAN-23-0816)
@@ -154,7 +155,14 @@ Run from the project root. Structures are downloaded automatically (except `stru
 
 11. Cock PJA, et al. Biopython: freely available Python tools for computational molecular biology and bioinformatics. *Bioinformatics*. 2009;25(11):1422–1423. doi:[10.1093/bioinformatics/btp163](https://doi.org/10.1093/bioinformatics/btp163)
 12. Rego N, Koes D. 3Dmol.js: molecular visualization with WebGL. *Bioinformatics*. 2015;31(8):1322–1324. doi:[10.1093/bioinformatics/btu829](https://doi.org/10.1093/bioinformatics/btu829)
-13. The PyMOL Molecular Graphics System (open-source build). Schrödinger, LLC.
+13. The PyMOL Molecular Graphics System, open-source build. Schrödinger, LLC. [pymol.org](https://pymol.org)
+
+**Therapy and mutant structure**
+
+14. Skoulidis F, et al. Sotorasib for lung cancers with KRAS p.G12C mutation. *New England Journal of Medicine*. 2021;384(25):2371–2381. doi:[10.1056/NEJMoa2103695](https://doi.org/10.1056/NEJMoa2103695)
+15. Jänne PA, et al. Adagrasib in non–small-cell lung cancer harboring a KRAS G12C mutation. *New England Journal of Medicine*. 2022;387(2):120–131. doi:[10.1056/NEJMoa2204619](https://doi.org/10.1056/NEJMoa2204619)
+16. Joerger AC, Ang HC, Fersht AR. Structural basis for understanding oncogenic p53 mutations and designing rescue drugs. *PNAS*. 2006;103(41):15056–15061. PMID: [17015838](https://pubmed.ncbi.nlm.nih.gov/17015838/)
+17. PYNNACLE: Phase 1/2 study of rezatapopt (PC14586) in advanced solid tumors with a TP53 Y220C mutation. ClinicalTrials.gov [NCT04585750](https://clinicaltrials.gov/study/NCT04585750)
 
 ## Author
 
