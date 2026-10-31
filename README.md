@@ -12,6 +12,8 @@
   <br><em>TP53 bound to DNA (PDB 1TSR), coloured by how many patients carry a mutation at each residue (white = none, red = most).</em>
 </p>
 
+📝 **Blog post:** [Traffic Lights and Traffic Police: Where Do Cancer Mutations Sit in 3D?](https://mdabrarfaiyaj.github.io/posts/Where-Do-Cancer-Mutations-Sit-in-3D/)
+
 Cancer genomes carry thousands of mutations, but only a few drive the disease. This project asks a simple question:
 
 > **Do cancer mutations in TP53, KRAS and PIK3CA fall at random positions, or do they cluster in specific 3D regions that control each protein's function?**
