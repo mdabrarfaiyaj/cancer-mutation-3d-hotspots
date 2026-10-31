@@ -78,10 +78,14 @@ def draw_lollipop(ax, gene, counts):
     ax.scatter(counts["position"], counts["n_patients"], s=18, color=HEAD_COLOR,
                edgecolor="white", linewidth=0.4, zorder=2)
 
-    # label top hotspots
+    # label top hotspots at the POSITION level (e.g. "G12"), because the count
+    # includes every amino-acid change at that residue (G12D + G12V + G12C ...).
+    # Skip tiny peaks (< 5% of the tallest) so labels don't crowd.
     top = counts.nlargest(N_LABELS, "n_patients")
+    top = top[top["n_patients"] >= 0.05 * ymax]
     for _, r in top.iterrows():
-        ax.annotate(f"{r['top_change']}\n(n={r['n_patients']})",
+        residue = f"{str(r['top_change'])[0]}{r['position']}"   # wild-type letter + position
+        ax.annotate(f"{residue}\n(n={r['n_patients']})",
                     (r["position"], r["n_patients"]),
                     xytext=(0, 6), textcoords="offset points",
                     ha="center", va="bottom", fontsize=7.5)
@@ -152,7 +156,28 @@ def cancer_type_figure(top_n=8):
     print("Saved cancer-type bar chart")
 
 
+def hotspot_variant_table(top_n=5):
+    """For each gene's top positions, list the exact amino-acid changes (patients counted once)."""
+    rows = []
+    for gene in PROTEINS:
+        raw = pd.read_csv(RAW_DIR / f"{gene}_mutations_raw.csv")
+        mis = raw[raw["mutation_type"] == "Missense_Mutation"].drop_duplicates(["patient", "position"])
+        top_pos = mis["position"].value_counts().head(top_n).index
+        for pos in top_pos:
+            at_pos = mis[mis["position"] == pos]["protein_change"].value_counts()
+            rows.append({
+                "gene": gene,
+                "position": int(pos),
+                "total_patients": int(at_pos.sum()),
+                "variants": ", ".join(f"{v} ({n})" for v, n in at_pos.items()),
+            })
+    out = Path("results/hotspot_variants.csv")
+    pd.DataFrame(rows).to_csv(out, index=False)
+    print(f"Saved {out}")
+
+
 if __name__ == "__main__":
     lollipop_figures()
     cancer_type_figure()
+    hotspot_variant_table()
     print(f"Done. Figures are in {FIG_DIR}/")
