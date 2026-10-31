@@ -1,0 +1,14 @@
+name: cancer3d
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - pandas
+  - numpy
+  - scipy
+  - matplotlib
+  - requests
+  - biopython
+  - py3dmol
+  - pymol-open-source
+  - jupyterlab
